@@ -1,0 +1,9 @@
+TODO:
+1. Få data inn i array
+2. Definere 20 dager
+3. Itterere gjennom
+4. Kalkulere standard deviation
+5. Finne høyeste
+6. Finne miste
+7. Få inn i graf
+8. cleanup
