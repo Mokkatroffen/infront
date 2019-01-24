@@ -1,4 +1,5 @@
 TODO:
+0. Oppdatere koden til et mer anvendelig utgangspunkt (chart.js npm pakke osv)
 1. Få data inn i array
 2. Definere 20 dager
 3. Itterere gjennom
