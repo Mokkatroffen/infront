@@ -8,21 +8,72 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <meta name="theme-color" content="#000000" />
-    <!--
-      manifest.json provides metadata used when your web app is added to the
-      homescreen on Android. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+    <title>Infront code-test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function(event) {
+        getDataSet("/data/Oslo_STL.json", function(dataSet) {
+          if (dataSet) {
+            renderChart("STL", JSON.parse(dataSet));
+          }
+        });
+        getDataSet("/data/Stockholm_ABB.json", function(dataSet) {
+          if (dataSet) {
+            renderChart("ABB", JSON.parse(dataSet));
+          }
+        });
+      });
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
+      function renderChart(id, dataSet) {
+        var data = dataSet.map(function(item, index, array) {
+          return {
+            x: new Date(item.date).toISOString(),
+            y: item.last
+          };
+        });
+        var context = document.querySelector("#" + id).getContext("2d");
+        var stockChart = new Chart(context, {
+          type: "line",
+          data: {
+            datasets: [
+              {
+                label: id,
+                fill: false,
+                data: data,
+                pointRadius: 0,
+                borderColor: "#1a5ecc"
+              }
+            ]
+          },
+          options: {
+            responsive: false,
+            scales: {
+              xAxes: [
+                {
+                  type: "time",
+                  display: true
+                }
+              ]
+            }
+          }
+        });
+      }
+
+      function getDataSet(url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url);
+        xhr.onload = function() {
+          if (xhr.status == 200) {
+            callback(xhr.responseText);
+          } else {
+            callback(null);
+          }
+        };
+        xhr.send();
+      }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
