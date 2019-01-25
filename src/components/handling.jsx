@@ -24,8 +24,8 @@ class Test extends React.Component {
     let datablog = JSON.stringify(this.state.test);
     return (
       <p>
-        JSON dataen er
-        <br />: {datablog}{" "}
+        JSON dataen er her
+        {/*<br />: {datablog}{" "}*/}
       </p>
     );
   }

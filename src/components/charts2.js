@@ -1,55 +1,74 @@
 import React, { Component } from "react";
 import { Bar, Line, Pie } from "react-chartjs-2";
 import statoilStock from "../data/Oslo_STL.json";
+import stockholmStock from "../data/Stockholm_ABB";
 import { Grid, Header, Statistic } from "semantic-ui-react";
 
-const statoilData = () => {
-  const data = {
-    labels: statoilStock.statoilData[0].date,
-    datasets: statoilStock.statoilData[1].last
-  };
-  return <Bar data={data} />;
-};
-
 export default class Dashboard extends React.PureComponent {
-  renderDashboardStatistics = () => {
-    return statoilStock.statistics.map(item => {
+  constructor() {
+    super();
+    this.state = {
+      chartdata: "",
+      statoilData: "",
+      lastchanse: "",
+      topbarLinks: ""
+    };
+  }
+
+  morraDi() {
+    const { lastchanse } = this.state;
+
+    let lastchanse2 = statoilStock.map(key => {
       return (
-        <Statistic key={item.id}>
-          {console.log(statoilStock)}
-          <Statistic.Value>{item.value}</Statistic.Value>
-          <Statistic.Label>{item.id}</Statistic.Label>
-        </Statistic>
+        <h1>
+          {console.log(key)}
+          test
+        </h1>
       );
     });
-  };
+    this.setState({ lastchanse: lastchanse2 });
+    this.setState({ validEmail: true });
+
+    //or just this.setState({ topbarLinks });
+  }
+  sostraDi() {
+    return (
+      <Line
+        data={{
+          labels: statoilStock.map(item => item.date),
+          datasets: [
+            {
+              data: statoilStock.map(item => item.last),
+              label: "Oslo børs",
+              backgroundColor: "",
+              borderColor: "rgba(255,99,132,1)",
+              borderWidth: 1,
+              hoverBackgroundColor: "rgba(255,99,132,0.4)",
+              hoverBorderColor: "rgba(255,99,132,1)"
+            },
+            {
+              data: stockholmStock.map(item => item.last),
+              label: "Svenskene",
+              backgroundColor: "",
+              borderColor: "rgba(255, 1, 30, 0.64)",
+              borderWidth: 1,
+              hoverBackgroundColor: "rgba(255,99,132,0.4)",
+              hoverBorderColor: "rgba(255,99,132,1)"
+            }
+          ]
+        }}
+        options={{
+          maintainAspectRatio: true,
+          scales: { yAxes: [{ ticks: { beginAtZero: true } }] },
+          backgroundColor: "rgba(255, 99, 132, 0.2)"
+        }}
+        backgroundColor="rgba(255, 99, 132, 0.2)"
+      />
+    );
+  }
 
   render() {
-    return (
-      <div>
-        <Header as="h2">Dashboard</Header>
-        {}
-        <Grid stackable>
-          <Grid.Row>
-            <Grid.Column width={16}>
-              <Header as="h4" dividing>
-                Monthly users
-              </Header>
-              <statoilData />
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column width={16}>
-              <Header as="h4" dividing>
-                Statistics
-              </Header>
-              <Statistic.Group size="small">
-                {this.renderDashboardStatistics()}
-              </Statistic.Group>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </div>
-    );
+    const { chartdata, lastchanse } = this.state;
+    return <div>{this.sostraDi()}</div>;
   }
 }
