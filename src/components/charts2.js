@@ -9,15 +9,11 @@ export default class Dashboard extends React.PureComponent {
     super();
     this.state = {
       chartdata: "",
-      statoilData: "",
-      lastchanse: "",
-      topbarLinks: ""
+      lastchanse: ""
     };
   }
 
   morraDi() {
-    const { lastchanse } = this.state;
-
     let lastchanse2 = statoilStock.map(key => {
       return (
         <h1>
@@ -31,6 +27,25 @@ export default class Dashboard extends React.PureComponent {
 
     //or just this.setState({ topbarLinks });
   }
+
+  math() {
+    var math = statoilStock.map(item => item.last);
+    var mathlength = math.length;
+    var sma = new Array();
+    console.log(math);
+    for (var i = 0; i < mathlength; i++) {
+      if (i < 20) {
+        sma[i] = 0;
+      } else {
+        var last20 = math.slice(Math.max(i - 19, 1));
+        var sum = last20.reduce((a, b) => a + b, 0);
+        var avg = sum / 20;
+        sma[i] = avg;
+      }
+    }
+    return console.log(sma);
+  }
+
   sostraDi() {
     return (
       <Line
@@ -69,6 +84,10 @@ export default class Dashboard extends React.PureComponent {
 
   render() {
     const { chartdata, lastchanse } = this.state;
-    return <div>{this.sostraDi()}</div>;
+    return (
+      <div>
+        {this.sostraDi()} {this.math()}
+      </div>
+    );
   }
 }
