@@ -43,7 +43,7 @@ export default class Dashboard extends React.PureComponent {
         bollingerMinus[i] = +parseFloat(math[i] - avgsecond[i]).toFixed(1); //Samme som pluss bare minus
         //bollingerMinus = statoilStock.map(item => item.date);
         var newBollingerMinus = bollingerMinus.reduce((acc, curr) => {
-          const item = { date: dates[i], value: curr };
+          const item = { date: dates[i], last: curr };
           acc.push(item);
           return acc;
         }, []);
@@ -54,8 +54,9 @@ export default class Dashboard extends React.PureComponent {
 
   renderChart() {
     const newBollingerMinus = this.math();
-    console.log("Bollinger er:", newBollingerMinus);
+    console.log("newBollingerMinus er:", newBollingerMinus);
     console.log("Statoilstock er:", statoilStock);
+    console.log("Svenskene er:", stockholmStock);
     return (
       <Line
         data={{
